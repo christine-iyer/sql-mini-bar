@@ -26,17 +26,14 @@ async def create_bevvy(bevvy: BevvyCreate, db: Session = Depends(get_db)):
     # Create a new bevvy record
     new_bevvy = Bevvy(
         name=bevvy.name,
-        ingredients=json.dumps(bevvy.ingredients) if bevvy.ingredients else "[]",  # Serialize list to JSON string
+        ingredients=bevvy.ingredients,  # Directly assign the list
         picture=bevvy.picture,
     )
     db.add(new_bevvy)
     db.commit()
     db.refresh(new_bevvy)
     
-    # Deserialize ingredients for the response
-    new_bevvy.ingredients = json.loads(new_bevvy.ingredients)
     return new_bevvy
-
 # GET endpoint to retrieve all bevs
 @router.get("/bevs/", response_model=List[BevvyResponse])
 async def get_bevs(db: Session = Depends(get_db)):
