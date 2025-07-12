@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from auth import router as auth_router
 from routes.bevs import router as bevs_router
 
 
@@ -18,3 +17,7 @@ app.add_middleware(
 # Include routers
 
 app.include_router(bevs_router)
+# Define a root route
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the SQL Mini Bar API!"}
